@@ -1,11 +1,10 @@
-"use client";
-
-import React from "react";
-import properties from "@/properties.json";
 import PropertyCard from "./PropertyCard";
 import Link from "next/link";
+import { Property } from "@/utils/types";
+import { fetchProperties } from "@/utils/requests";
 
-function HomeProperties() {
+const HomeProperties = async () => {
+  const properties: Property[] = await fetchProperties();
   const recentProperties = properties.slice(0, 3);
 
   return (
@@ -37,6 +36,6 @@ function HomeProperties() {
       </section>
     </>
   );
-}
+};
 
 export default HomeProperties;

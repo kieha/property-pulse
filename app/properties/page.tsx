@@ -1,8 +1,13 @@
-import React from "react";
 import PropertyCard from "@/components/PropertyCard";
-import properties from "@/properties.json";
+import type { Property } from "@/utils/types";
+import { fetchProperties } from "@/utils/requests";
 
-function PropertiesPage() {
+const PropertiesPage = async () => {
+  const properties: Property[] = await fetchProperties();
+  properties.sort(
+    (a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(),
+  );
+
   return (
     <section className="px-4 py-6">
       <div className="container-xl lg:container m-auto px-4 py-6">
@@ -18,6 +23,6 @@ function PropertiesPage() {
       </div>
     </section>
   );
-}
+};
 
 export default PropertiesPage;
