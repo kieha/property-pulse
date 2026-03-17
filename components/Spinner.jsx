@@ -2,11 +2,11 @@
 import ClipLoader from "react-spinners/ClipLoader";
 
 const override = {
-  display: "block",
-  margin: "100px auto",
-};
+    display: "block",
+    margin: "100px auto",
+  };
 
-function LoadingPage() {
+function Spinner() {
   return (
     <ClipLoader
       color="#3b82f6"
@@ -18,4 +18,4 @@ function LoadingPage() {
   );
 }
 
-export default LoadingPage;
+export default Spinner;
