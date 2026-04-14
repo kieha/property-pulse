@@ -1,11 +1,11 @@
-import { type Profile, type Session } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import NextAuth, { type Profile, type Session } from "next-auth";
+import Google from "next-auth/providers/google";
 import connectDB from "@/config/database";
 import User from "@/models/User";
 
 export const authOptions = {
   providers: [
-    GoogleProvider({
+    Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
        authorization: {
@@ -47,3 +47,5 @@ export const authOptions = {
     }
   }
 };
+ 
+export const { auth, handlers, signIn, signOut } = NextAuth(authOptions);

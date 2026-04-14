@@ -7,16 +7,16 @@ import { usePathname } from "next/navigation";
 import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
 import { FaGoogle } from "react-icons/fa";
-import {
-  signIn,
-  signOut,
-  useSession,
-  getProviders,
-  type ClientSafeProvider,
-} from "next-auth/react";
+import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 type Provider = {
-  string: ClientSafeProvider;
+  string: {
+    id: string;
+    name: string;
+    type: string;
+    signinUrl: string;
+    callbackUrl: string;
+  };
 };
 
 const Navbar = () => {
