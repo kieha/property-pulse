@@ -11,11 +11,16 @@ import PropertyDetails from "@/components/PropertyDetails";
 import Spinner from "@/components/Spinner";
 import PropertyImages from "@/components/PropertyImages";
 
-function PropertyPage() {
+const PropertyPage = () => {
   const { id } = useParams();
 
+  const [mounted, setMounted] = useState<boolean>(false);
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchPropertyData = async () => {
@@ -45,8 +50,8 @@ function PropertyPage() {
 
   return (
     <>
-      {loading && <Spinner />}
-      {!loading && property && (
+      {(!mounted || loading) && <Spinner />}
+      {mounted && !loading && property && (
         <>
           <PropertyHeaderImage image={property.images[0]} />
 
@@ -157,6 +162,6 @@ function PropertyPage() {
       )}
     </>
   );
-}
+};
 
 export default PropertyPage;
