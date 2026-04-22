@@ -18,6 +18,12 @@ const amenities = [
   { id: "amenity_balcony_patio", value: "Balcony/Patio" },
   { id: "amenity_smart_tv", value: "Smart TV" },
   { id: "amenity_coffee_maker", value: "Coffee Maker" },
+  { id: "amenity_beach_access", value: "Beach Access" },
+  { id: "amenity_outdoor_grill_bbq", value: "Outdoor Grill/BBQ" },
+  { id: "amenity_fireplace", value: "Fireplace" },
+  { id: "amenity_hiking_trails_access", value: "Hiking Trails Access" },
+  { id: "amenity_pet_friendly", value: "Pet-Friendly" },
+  { id: "amenity_ski_equipment_storage", value: "Ski Equipment Storage" },
 ];
 
 type PropertyFields = {
@@ -169,6 +175,7 @@ const PropertyAddForm = () => {
           <option value="Cabin Or Cottage">Cabin or Cottage</option>
           <option value="Room">Room</option>
           <option value="Studio">Studio</option>
+          <option value="Chalet">Chalet</option>
           <option value="Other">Other</option>
         </select>
       </div>

@@ -47,7 +47,7 @@ export const authOptions = {
     },
     authorized: async ({ auth }: { auth: any }) => {
       // Logged in users are authenticated, otherwise redirect to login page
-      return !!auth
+      return !!auth;
     },
   }
 };

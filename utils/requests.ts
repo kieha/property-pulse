@@ -45,6 +45,4 @@ async function fetchProperty(id: string) {
   }
 };
 
-
-
 export { fetchProperties, fetchProperty };

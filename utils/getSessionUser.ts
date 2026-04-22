@@ -16,4 +16,4 @@ export const getSessionUser = async () => {
     console.error(error);
     return null;
   }
-}
+};

@@ -28,4 +28,4 @@ export type Property = {
   is_featured: boolean;
   createdAt: string;
   updatedAt: string;
-}
+};
