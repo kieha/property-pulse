@@ -56,18 +56,18 @@ type PropertyFields = {
 const PropertyAddForm = () => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [fields, setFields] = useState<PropertyFields>({
-    name: "Test Property",
-    type: "Apartment",
+    name: "",
+    type: "",
     description: "",
     location: {
-      street: "120 Tremont Street",
-      city: "Boston",
-      state: "MA",
-      zipcode: "02108",
+      street: "",
+      city: "",
+      state: "",
+      zipcode: "",
     },
-    beds: "2",
-    baths: "1",
-    square_feet: "1500",
+    beds: "",
+    baths: "",
+    square_feet: "",
     amenities: [],
     rates: {
       weekly: "",
@@ -75,9 +75,9 @@ const PropertyAddForm = () => {
       nightly: "",
     },
     seller_info: {
-      name: "John Doe",
-      email: "john@gmail.com",
-      phone: "617-555-5555",
+      name: "",
+      email: "",
+      phone: "",
     },
     images: [],
   });

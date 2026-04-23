@@ -1,9 +1,8 @@
 import PropertyCard from "@/components/PropertyCard";
-import type { Property } from "@/utils/types";
 import { fetchProperties } from "@/utils/requests";
 
 const PropertiesPage = async () => {
-  const properties: Property[] = await fetchProperties();
+  const properties = await fetchProperties();
   properties.sort(
     (a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(),
   );
