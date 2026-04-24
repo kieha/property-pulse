@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Property } from "@/utils/types";
 import { fetchProperty } from "@/utils/requests";
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
@@ -12,6 +13,7 @@ import Spinner from "@/components/Spinner";
 import PropertyImages from "@/components/PropertyImages";
 
 const PropertyPage = () => {
+  const { data: session } = useSession();
   const { id } = useParams();
 
   const [mounted, setMounted] = useState<boolean>(false);
@@ -26,8 +28,8 @@ const PropertyPage = () => {
     const fetchPropertyData = async () => {
       if (!id) return;
       try {
-        const property = await fetchProperty(id as string);
-        setProperty(property);
+        const propertyData = await fetchProperty(id as string);
+        setProperty(propertyData);
       } catch (error) {
         console.error("Error fetching property", error);
       } finally {
@@ -72,6 +74,14 @@ const PropertyPage = () => {
                 <PropertyDetails property={property} />
 
                 <aside className="space-y-4">
+                  {session?.user?.id === property.owner ? (
+                    <Link
+                      href={`/properties/${property._id}/edit`}
+                      className="bg-green-500 hover:bg-green-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
+                    >
+                      <i className="fas fa-share mr-2"></i> Edit Property
+                    </Link>
+                  ) : null}
                   <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center">
                     <i className="fas fa-bookmark mr-2"></i> Bookmark Property
                   </button>

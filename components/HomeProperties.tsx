@@ -1,15 +1,37 @@
-import PropertyCard from "./PropertyCard";
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Property } from "@/utils/types";
+import type { Property } from "@/utils/types";
 import { fetchProperties } from "@/utils/requests";
+import PropertyCard from "@/components/PropertyCard";
+import Spinner from "./Spinner";
 
-const HomeProperties = async () => {
-  const properties: Property[] = await fetchProperties();
-  const recentProperties = properties
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 3);
+const HomeProperties = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [properties, setProperties] = useState<Property[]>([]);
 
-  return (
+  useEffect(() => {
+    const fetchPropertiesData = async () => {
+      try {
+        const propertiesData = await fetchProperties();
+        const recentProperties = propertiesData
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 3);
+        setProperties(recentProperties);
+      } catch (error) {
+        console.error("Error fetching properties", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPropertiesData();
+  }, []);
+
+  return loading ? (
+    <Spinner />
+  ) : (
     <>
       <section className="px-4 py-6">
         <div className="container-xl lg:container m-auto">
@@ -17,10 +39,10 @@ const HomeProperties = async () => {
             Recent Properties
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {!recentProperties ? (
+            {!properties ? (
               <p>No properties found</p>
             ) : (
-              recentProperties.map((property) => (
+              properties.map((property) => (
                 <PropertyCard key={property._id} property={property} />
               ))
             )}

@@ -24,8 +24,8 @@ const ProfilePage = () => {
       if (!userId) return;
 
       try {
-        const properties = await fetchUserProperties(userId);
-        setProperties(properties);
+        const propertiesData = await fetchUserProperties(userId);
+        setProperties(propertiesData);
       } catch (error) {
         console.error("Error fetching properties", error);
       } finally {

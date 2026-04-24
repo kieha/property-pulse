@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { fetchProperty, updateProperty } from "@/utils/requests";
+import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { fetchProperty } from "@/utils/requests";
 import type { Property } from "@/utils/types";
 import Spinner from "@/components/Spinner";
 import { amenities } from "@/components/PropertyAddForm";
@@ -38,6 +39,7 @@ interface PropertyFields extends Omit<
 }
 
 const PropertyEditForm = () => {
+  const { data: session } = useSession();
   const { id } = useParams();
   const router = useRouter();
 
@@ -97,7 +99,11 @@ const PropertyEditForm = () => {
     };
 
     fetchPropertyData();
-  }, [id]);
+
+    if (!session?.user) {
+      router.push("/");
+    }
+  }, [id, session?.user, router]);
 
   const handleChange = (
     e: React.ChangeEvent<

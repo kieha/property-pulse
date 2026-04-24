@@ -1,4 +1,4 @@
-import NextAuth, { type Profile, type Session } from "next-auth";
+import NextAuth, { type DefaultSession, type Profile, type Session } from "next-auth";
 import Google from "next-auth/providers/google";
 import connectDB from "@/config/database";
 import User from "@/models/User";
@@ -45,7 +45,7 @@ export const authOptions = {
       session.user.id = user._id.toString();
       return session;
     },
-    authorized: async ({ auth }: { auth: any }) => {
+    authorized: async ({ auth }: { auth: DefaultSession | null }) => {
       // Logged in users are authenticated, otherwise redirect to login page
       return !!auth;
     },
