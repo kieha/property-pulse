@@ -26,7 +26,7 @@ async function fetchProperties() {
 
 /**
  * Fetch a single property
- * @param id 
+ * @param id string
  * @returns Property
  */
 async function fetchProperty(id: string) {
@@ -49,7 +49,7 @@ async function fetchProperty(id: string) {
 
 /**
  * Fetch properties belonging to a specific user
- * @param userId 
+ * @param userId string
  * @returns Property[]
  */
 async function fetchUserProperties(userId: string) {
@@ -71,8 +71,8 @@ async function fetchUserProperties(userId: string) {
 };
 
 /**
- * Delete a single property
- * @param id 
+ * Delete a property
+ * @param id string
  * @returns true
  */
 async function deleteProperty(id: string) {
@@ -93,4 +93,32 @@ async function deleteProperty(id: string) {
   }
 };
 
-export { fetchProperties, fetchProperty, fetchUserProperties, deleteProperty };
+/**
+ * Update a property
+ * @param id String
+ * @param data FormData
+ * @returns Property
+ */
+async function updateProperty(id: string, data: FormData) {
+  try {
+    // handle case where domain is not available yet
+    if (!apiDomain) return null;
+
+    const res = await fetch(`${apiDomain}/properties/${id}`, { method: "PUT", body: data });
+
+    if (!res.ok) {
+      if (res.status === 401 || res.status === 403) {
+        throw new Error("Permission denied");
+      } else {
+        throw new Error("Failed to update property");
+      }
+    }
+
+    return await res.json() as Property;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export { fetchProperties, fetchProperty, fetchUserProperties, deleteProperty, updateProperty };

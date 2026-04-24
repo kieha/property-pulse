@@ -3,8 +3,8 @@ import {
   FaBed,
   FaBath,
   FaRulerCombined,
-  FaTimes,
   FaCheck,
+  FaMinus,
   FaMapMarker,
 } from "react-icons/fa";
 
@@ -36,7 +36,7 @@ function PropertyDetails({ property }: PropertyDetailsProps) {
               {property.rates.nightly ? (
                 `$${property.rates.nightly.toLocaleString()}`
               ) : (
-                <FaTimes className="text-red-700" />
+                <FaMinus className="text-red-700" />
               )}
             </div>
           </div>
@@ -46,7 +46,7 @@ function PropertyDetails({ property }: PropertyDetailsProps) {
               {property.rates.weekly ? (
                 `$${property.rates.weekly.toLocaleString()}`
               ) : (
-                <FaTimes className="text-red-700" />
+                <FaMinus className="text-red-700" />
               )}
             </div>
           </div>
@@ -56,7 +56,7 @@ function PropertyDetails({ property }: PropertyDetailsProps) {
               {property.rates.monthly ? (
                 `$${property.rates.monthly.toLocaleString()}`
               ) : (
-                <FaTimes className="text-red-700" />
+                <FaMinus className="text-red-700" />
               )}
             </div>
           </div>

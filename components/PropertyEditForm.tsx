@@ -1,41 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { fetchProperty, updateProperty } from "@/utils/requests";
+import type { Property } from "@/utils/types";
+import Spinner from "@/components/Spinner";
+import { amenities } from "@/components/PropertyAddForm";
 
-export const amenities = [
-  { id: "amenity_wifi", value: "Wifi" },
-  { id: "amenity_kitchen", value: "Full Kitchen" },
-  { id: "amenity_washer_dryer", value: "Washer & Dryer" },
-  { id: "amenity_free_parking", value: "Free Parking" },
-  { id: "amenity_pool", value: "Swimming Pool" },
-  { id: "amenity_hot_tub", value: "Hot Tub" },
-  { id: "amenity_24_7_security", value: "24/7 Security" },
-  { id: "amenity_wheelchair_accessible", value: "Wheelchair Accessible" },
-  { id: "amenity_elevator_access", value: "Elevator Access" },
-  { id: "amenity_dishwasher", value: "Dishwasher" },
-  { id: "amenity_gym_fitness_center", value: "Gym/Fitness Center" },
-  { id: "amenity_air_conditioning", value: "Air Conditioning" },
-  { id: "amenity_balcony_patio", value: "Balcony/Patio" },
-  { id: "amenity_smart_tv", value: "Smart TV" },
-  { id: "amenity_coffee_maker", value: "Coffee Maker" },
-  { id: "amenity_beach_access", value: "Beach Access" },
-  { id: "amenity_outdoor_grill_bbq", value: "Outdoor Grill/BBQ" },
-  { id: "amenity_fireplace", value: "Fireplace" },
-  { id: "amenity_hiking_trails_access", value: "Hiking Trails Access" },
-  { id: "amenity_pet_friendly", value: "Pet-Friendly" },
-  { id: "amenity_ski_equipment_storage", value: "Ski Equipment Storage" },
-];
-
-type PropertyFields = {
-  name: string;
-  type: string;
-  description?: string;
-  location: {
-    street?: string;
-    city?: string;
-    state?: string;
-    zipcode?: string;
-  };
+interface PropertyFields extends Omit<
+  Property,
+  | "_id"
+  | "beds"
+  | "baths"
+  | "square_feet"
+  | "rates"
+  | "owner"
+  | "images"
+  | "is_featured"
+  | "createdAt"
+  | "updatedAt"
+> {
   beds: string;
   baths: string;
   square_feet: string;
@@ -46,14 +31,18 @@ type PropertyFields = {
     monthly?: string;
   };
   seller_info: {
-    name?: string;
-    email?: string;
-    phone?: string;
+    name: string;
+    email: string;
+    phone: string;
   };
-  images: Array<File>;
-};
+}
 
-const PropertyAddForm = () => {
+const PropertyEditForm = () => {
+  const { id } = useParams();
+  const router = useRouter();
+
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [fields, setFields] = useState<PropertyFields>({
     name: "",
     type: "",
@@ -78,8 +67,37 @@ const PropertyAddForm = () => {
       email: "",
       phone: "",
     },
-    images: [],
   });
+
+  useEffect(() => {
+    // fetch property data for form
+    const fetchPropertyData = async () => {
+      try {
+        const propertyData = await fetchProperty(id as string);
+
+        // check rates for null and convert to empty string
+        if (propertyData?.rates) {
+          let defaultRates = { ...propertyData.rates };
+          for (const [key, value] of Object.entries(defaultRates)) {
+            if (value === null) {
+              defaultRates = {
+                ...defaultRates,
+                [key]: "",
+              };
+            }
+            propertyData.rates = defaultRates;
+          }
+        }
+        setFields(propertyData as unknown as PropertyFields);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPropertyData();
+  }, [id]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -135,27 +153,37 @@ const PropertyAddForm = () => {
     }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { files } = e.target;
+  const handleSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault();
 
-    // clone images array
-    const updatedImages = [...fields.images];
+    try {
+      setSubmitting(true);
+      const formData = new FormData(e.target);
+      const res = await fetch(`/api/properties/${id}`, {
+        method: "PUT",
+        body: formData,
+      });
 
-    // add new files to the array
-    for (const file of files!) {
-      updatedImages.push(file);
+      if (res.status === 200) {
+        router.push(`/properties/${id}`);
+      } else if (res.status === 401 || res.status === 403) {
+        toast.error("Permission denied");
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    } finally {
+      setSubmitting(false);
     }
-
-    // update state with array of images
-    setFields((prevFields) => ({
-      ...prevFields,
-      images: updatedImages,
-    }));
   };
 
-  return (
-    <form action="/api/properties" method="POST" encType="multipart/form-data">
-      <h2 className="text-3xl text-center font-semibold mb-6">Add Property</h2>
+  return loading ? (
+    <Spinner />
+  ) : (
+    <form onSubmit={handleSubmit}>
+      <h2 className="text-3xl text-center font-semibold mb-6">Edit Property</h2>
 
       <div className="mb-4">
         <label htmlFor="type" className="block text-gray-700 font-bold mb-2">
@@ -422,32 +450,17 @@ const PropertyAddForm = () => {
         />
       </div>
 
-      <div className="mb-4">
-        <label htmlFor="images" className="block text-gray-700 font-bold mb-2">
-          Images (Select up to 4 images)
-        </label>
-        <input
-          type="file"
-          id="images"
-          name="images"
-          className="border rounded w-full py-2 px-3"
-          accept="image/*"
-          multiple
-          onChange={handleImageChange}
-          required
-        />
-      </div>
-
       <div>
         <button
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
           type="submit"
+          disabled={submitting}
         >
-          Add Property
+          Update Property
         </button>
       </div>
     </form>
   );
 };
 
-export default PropertyAddForm;
+export default PropertyEditForm;
