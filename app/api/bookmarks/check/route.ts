@@ -22,7 +22,7 @@ export const POST = async (request: Request) => {
     const user = await User.findOne({ _id: userId });
 
     // check if property is bookmarked
-    let isBookmarked = user.bookmarks.includes(propertyId);
+    const isBookmarked = user.bookmarks.includes(propertyId);
 
     return new Response(JSON.stringify({ isBookmarked }), { status: 200 });
   } catch (error) {

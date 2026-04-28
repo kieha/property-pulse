@@ -65,7 +65,7 @@ const PropertyMap = ({ property }: PropertyMapProps) => {
     };
 
     fetchCoordinates();
-  }, [property.location]);
+  }, [property.location, viewport]);
 
   if (loading) return <Spinner />;
 

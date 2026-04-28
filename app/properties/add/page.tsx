@@ -1,4 +1,3 @@
-import React from "react";
 import PropertyAddForm from "@/components/PropertyAddForm";
 
 function PropertyAddPage() {

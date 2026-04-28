@@ -1,4 +1,3 @@
-import React from "react";
 import PropertyEditForm from "@/components/PropertyEditForm";
 
 const PropertyEditPage = () => {
