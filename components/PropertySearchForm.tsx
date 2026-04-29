@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PropertyTypeOptions from "@/components/PropertyTypeOptions";
 
 const PropertySearchForm = () => {
   const router = useRouter();
@@ -48,14 +49,7 @@ const PropertySearchForm = () => {
           onChange={(e) => setPropertyType(e.target.value)}
         >
           <option value="All">All</option>
-          <option value="Apartment">Apartment</option>
-          <option value="Studio">Studio</option>
-          <option value="Condo">Condo</option>
-          <option value="House">House</option>
-          <option value="Cabin Or Cottage">Cabin or Cottage</option>
-          <option value="Loft">Loft</option>
-          <option value="Room">Room</option>
-          <option value="Other">Other</option>
+          <PropertyTypeOptions />
         </select>
       </div>
       <button

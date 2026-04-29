@@ -8,6 +8,7 @@ import { fetchProperty } from "@/utils/requests";
 import type { Property } from "@/utils/types";
 import Spinner from "@/components/Spinner";
 import { amenities } from "@/components/PropertyAddForm";
+import PropertyTypeOptions from "@/components/PropertyTypeOptions";
 
 interface PropertyFields extends Omit<
   Property,
@@ -203,14 +204,7 @@ const PropertyEditForm = () => {
           value={fields.type}
           onChange={handleChange}
         >
-          <option value="Apartment">Apartment</option>
-          <option value="Condo">Condo</option>
-          <option value="House">House</option>
-          <option value="Cabin Or Cottage">Cabin or Cottage</option>
-          <option value="Room">Room</option>
-          <option value="Studio">Studio</option>
-          <option value="Chalet">Chalet</option>
-          <option value="Other">Other</option>
+          <PropertyTypeOptions />
         </select>
       </div>
       <div className="mb-4">

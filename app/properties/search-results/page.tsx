@@ -6,8 +6,8 @@ import Link from "next/link";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import PropertyCard from "@/components/PropertyCard";
 import Spinner from "@/components/Spinner";
-import type { Property } from "@/utils/types";
 import PropertySearchForm from "@/components/PropertySearchForm";
+import type { Property } from "@/utils/types";
 
 const SearchResultsPage = () => {
   const searchParams = useSearchParams();
