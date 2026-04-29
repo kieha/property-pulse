@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Marker } from "react-map-gl/mapbox";
-import { setDefaults, fromAddress, OutputFormat } from "react-geocode";
+import { setDefaults, OutputFormat, geocode } from "react-geocode";
 import Image from "next/image";
 import Spinner from "@/components/Spinner";
 import type { Property } from "@/utils/types";
@@ -17,13 +17,6 @@ const PropertyMap = ({ property }: PropertyMapProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
-  const [viewport, setViewport] = useState({
-    latitude: 0,
-    longitude: 0,
-    zoom: 12,
-    width: "100%",
-    height: "500px",
-  });
   const [geocodeError, setGeocodeError] = useState<boolean>(false);
 
   setDefaults({
@@ -36,7 +29,8 @@ const PropertyMap = ({ property }: PropertyMapProps) => {
   useEffect(() => {
     const fetchCoordinates = async () => {
       try {
-        const res = await fromAddress(
+        const res = await geocode(
+          "address",
           `${property.location.street} ${property.location.city} ${property.location.state} ${property.location.zipcode} `,
         );
 
@@ -51,11 +45,6 @@ const PropertyMap = ({ property }: PropertyMapProps) => {
         const { lat, lng } = res.results[0].geometry.location;
         setLat(lat);
         setLng(lng);
-        setViewport({
-          ...viewport,
-          latitude: lat,
-          longitude: lng,
-        });
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -65,7 +54,7 @@ const PropertyMap = ({ property }: PropertyMapProps) => {
     };
 
     fetchCoordinates();
-  }, [property.location, viewport]);
+  }, [property.location]);
 
   if (loading) return <Spinner />;
 
