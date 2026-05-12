@@ -29,3 +29,23 @@ export type Property = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type Message = {
+  _id: string;
+  body: string;
+  email: string;
+  name: string;
+  phone: string;
+  property: {
+    _id: string;
+    name: string;
+  }
+  read: boolean;
+  recipient: string;
+  sender: {
+    _id: string;
+    username: string;
+  }
+  createdAt: string;
+  updatedAt: string;
+};

@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
+import { GlobalProvider } from "@/context/GlobalContext";
 
 export const metadata: Metadata = {
   title: "PropertyPulse | Find The Perfect Rental",
@@ -13,16 +14,18 @@ export const metadata: Metadata = {
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body>
-          <NavBar />
-          <main>{children}</main>
-          <Footer />
-          <ToastContainer />
-        </body>
-      </html>
-    </AuthProvider>
+    <GlobalProvider>
+      <AuthProvider>
+        <html lang="en">
+          <body>
+            <NavBar />
+            <main>{children}</main>
+            <Footer />
+            <ToastContainer />
+          </body>
+        </html>
+      </AuthProvider>
+    </GlobalProvider>
   );
 };
 

@@ -1,2 +1,10 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
+
+@layer base {
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+}

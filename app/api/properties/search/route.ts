@@ -18,7 +18,7 @@ export const GET = async (request: Request) => {
     const locationPattern = new RegExp(location!, "i");
 
     // match location pattern against database fields
-    let query: QueryType = {
+    const query: QueryType = {
       $or: [
         { name: locationPattern },
         { description: locationPattern },
