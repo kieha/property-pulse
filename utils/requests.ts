@@ -11,7 +11,7 @@ type PropertiesReturnType = {
  * Fetch properties from the database
  * @param [page] number - optional
  * @param [pageSize] number - optional
- * @returns Property[]
+ * @returns PropertiesReturnType
  */
 async function fetchProperties(page?: number, pageSize?: number) {
   try {
@@ -28,6 +28,28 @@ async function fetchProperties(page?: number, pageSize?: number) {
   } catch (error) {
     console.log(error);
     return { total: 0, properties: [] };
+  }
+};
+
+/**
+ * Fetch featured properties from the database
+ * @returns Property[]
+ */
+async function fetchFeaturedProperties() {
+  try {
+    // handle case where domain is not available yet
+    if (!apiDomain) return [];
+
+    const res = await fetch(`${apiDomain}/properties/featured`, { cache: "no-store" });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch properties");
+    }
+
+    return await res.json() as Property[];
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 };
 
@@ -128,4 +150,4 @@ async function updateProperty(id: string, data: FormData) {
   }
 };
 
-export { fetchProperties, fetchProperty, fetchUserProperties, deleteProperty, updateProperty };
+export { fetchProperties, fetchFeaturedProperties, fetchProperty, fetchUserProperties, deleteProperty, updateProperty };
