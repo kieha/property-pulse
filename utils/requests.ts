@@ -2,25 +2,32 @@ import type { Property } from "@/utils/types";
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
+type PropertiesReturnType = {
+  total: number;
+  properties: Property[];
+};
+
 /**
- * Fetch all the properties from the database
+ * Fetch properties from the database
+ * @param [page] number - optional
+ * @param [pageSize] number - optional
  * @returns Property[]
  */
-async function fetchProperties() {
-  try {    
+async function fetchProperties(page?: number, pageSize?: number) {
+  try {
     // handle case where domain is not available yet
-    if (!apiDomain) return [];
+    if (!apiDomain) return { total: 0, properties: [] };
 
-    const res = await fetch(`${apiDomain}/properties`, { cache: "no-store" });
+    const res = await fetch(`${apiDomain}/properties?page=${page}&pageSize=${pageSize}`, { cache: "no-store" });
 
     if (!res.ok) {
-      throw new Error("Failed to fetch property");
+      throw new Error("Failed to fetch properties");
     }
 
-    return await res.json() as Property[];
+    return await res.json() as PropertiesReturnType;
   } catch (error) {
     console.log(error);
-    return [];
+    return { total: 0, properties: [] };
   }
 };
 

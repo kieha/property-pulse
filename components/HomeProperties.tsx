@@ -15,7 +15,7 @@ const HomeProperties = () => {
     const fetchPropertiesData = async () => {
       try {
         const propertiesData = await fetchProperties();
-        const recentProperties = propertiesData
+        const recentProperties = propertiesData.properties
           .sort(() => 0.5 - Math.random())
           .slice(0, 3);
         setProperties(recentProperties);
