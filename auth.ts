@@ -46,7 +46,7 @@ export const authOptions = {
       return session;
     },
     authorized: async ({ auth }: { auth: DefaultSession | null }) => {
-      console.log({ auth })
+      console.log({ auth });
       // Logged in users are authenticated, otherwise redirect to login page
       return !!auth;
     },
