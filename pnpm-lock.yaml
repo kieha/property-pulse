@@ -26,6 +26,9 @@ importers:
       next-auth:
         specifier: 5.0.0-beta.30
         version: 5.0.0-beta.30(next@16.2.3(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
+      photoswipe:
+        specifier: ^5.4.4
+        version: 5.4.4
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -41,6 +44,9 @@ importers:
       react-map-gl:
         specifier: ^8.1.1
         version: 8.1.1(mapbox-gl@3.22.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react-photoswipe-gallery:
+        specifier: ^4.0.0
+        version: 4.0.0(photoswipe@5.4.4)(prop-types@15.8.1)(react@19.2.3)
       react-share:
         specifier: ^5.3.0
         version: 5.3.0(react@19.2.3)
@@ -1889,6 +1895,10 @@ packages:
     resolution: {integrity: sha512-SuLdBvS42z33m8ejRbInMapQe8n0D3vN/Xd5fmWM3tufNgRQFBpaW2YVJxQZV4iPNqb0vEFvssMEo5w9c6BTIA==}
     hasBin: true
 
+  photoswipe@5.4.4:
+    resolution: {integrity: sha512-WNFHoKrkZNnvFFhbHL93WDkW3ifwVOXSW3w1UuZZelSmgXpIGiZSNlZJq37rR8YejqME2rHs9EhH9ZvlvFH2NA==}
+    engines: {node: '>= 0.12.0'}
+
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -1971,6 +1981,13 @@ packages:
         optional: true
       maplibre-gl:
         optional: true
+
+  react-photoswipe-gallery@4.0.0:
+    resolution: {integrity: sha512-rpvGSBddLp1hZfTZgi3UFLJKlupHfDhW6e7w6jUUr5bagTWfrxJ7nB8yzNkx+BaoiMyy4FvJBwc4n/+QW2ft4g==}
+    peerDependencies:
+      photoswipe: '>= 5.2.2'
+      prop-types: '>= 15.7.0'
+      react: '>= 16.8.0'
 
   react-share@5.3.0:
     resolution: {integrity: sha512-NU4TqizVi2TuyLpN93/ng2ux+uIGHK5b2dT15cHvZDwfi5b5NuzGych4htCGObN8lubygeamhRxUot4lZ0Pv6Q==}
@@ -4233,6 +4250,8 @@ snapshots:
     dependencies:
       resolve-protobuf-schema: 2.1.0
 
+  photoswipe@5.4.4: {}
+
   picocolors@1.1.1: {}
 
   picomatch@2.3.1: {}
@@ -4298,6 +4317,12 @@ snapshots:
       react-dom: 19.2.3(react@19.2.3)
     optionalDependencies:
       mapbox-gl: 3.22.0
+
+  react-photoswipe-gallery@4.0.0(photoswipe@5.4.4)(prop-types@15.8.1)(react@19.2.3):
+    dependencies:
+      photoswipe: 5.4.4
+      prop-types: 15.8.1
+      react: 19.2.3
 
   react-share@5.3.0(react@19.2.3):
     dependencies:
