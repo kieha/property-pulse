@@ -16,7 +16,7 @@ export default proxy(async (req) => {
 
   if (!token) {
     // Redirect to sign-in page if the token is not found
-    return NextResponse.redirect(new URL("/auth/signin", req.url));
+    return NextResponse.redirect(new URL("/api/auth/signin", req.url));
   }
 
   return NextResponse.next();
