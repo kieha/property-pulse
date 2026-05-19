@@ -40,7 +40,7 @@ async function fetchFeaturedProperties() {
     // handle case where domain is not available yet
     if (!apiDomain) return [];
 
-    const res = await fetch(`${apiDomain}/properties/featured`, { cache: "no-store" });
+    const res = await fetch(`${apiDomain}/properties/featured`);
 
     if (!res.ok) {
       throw new Error("Failed to fetch properties");
