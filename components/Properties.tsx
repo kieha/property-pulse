@@ -43,18 +43,20 @@ const Properties = () => {
         {!properties.length ? (
           <p>No properties found</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {properties.map((property) => (
-              <PropertyCard key={property._id} property={property} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {properties.map((property) => (
+                <PropertyCard key={property._id} property={property} />
+              ))}
+            </div>
+            <Pagination
+              page={page}
+              pageSize={PAGE_SIZE}
+              totalItems={totalItems}
+              onPageChange={handlePageChange}
+            />
+          </>
         )}
-        <Pagination
-          page={page}
-          pageSize={PAGE_SIZE}
-          totalItems={totalItems}
-          onPageChange={handlePageChange}
-        />
       </div>
     </section>
   );

@@ -22,6 +22,7 @@ type Provider = {
 
 const Navbar = () => {
   const { data: session } = useSession();
+  console.log({ session });
   const profileImage = session?.user?.image;
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
