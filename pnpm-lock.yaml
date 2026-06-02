@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@auth/mongodb-adapter':
+        specifier: ^3.11.2
+        version: 3.11.2(mongodb@7.1.0)
       cloudinary:
         specifier: ^2.9.0
         version: 2.9.0
@@ -101,6 +104,25 @@ packages:
         optional: true
       nodemailer:
         optional: true
+
+  '@auth/core@0.41.2':
+    resolution: {integrity: sha512-Hx5MNBxN2fJTbJKGUKAA0wca43D0Akl3TvufY54Gn8lop7F+34vU1zA1pn0vQfIoVuLIrpfc2nkyjwIaPJMW7w==}
+    peerDependencies:
+      '@simplewebauthn/browser': ^9.0.1
+      '@simplewebauthn/server': ^9.0.2
+      nodemailer: ^7.0.7
+    peerDependenciesMeta:
+      '@simplewebauthn/browser':
+        optional: true
+      '@simplewebauthn/server':
+        optional: true
+      nodemailer:
+        optional: true
+
+  '@auth/mongodb-adapter@3.11.2':
+    resolution: {integrity: sha512-3yKYvPB/7NjDN5VW6iymEdQEKQOezqVpev4heAhN+zxz5G/jOIQdxBu8iF8nIomF8ggY+FRDqysSNwb72JM6dw==}
+    peerDependencies:
+      mongodb: ^6
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
@@ -2365,6 +2387,23 @@ snapshots:
       oauth4webapi: 3.8.5
       preact: 10.24.3
       preact-render-to-string: 6.5.11(preact@10.24.3)
+
+  '@auth/core@0.41.2':
+    dependencies:
+      '@panva/hkdf': 1.2.1
+      jose: 6.2.2
+      oauth4webapi: 3.8.5
+      preact: 10.24.3
+      preact-render-to-string: 6.5.11(preact@10.24.3)
+
+  '@auth/mongodb-adapter@3.11.2(mongodb@7.1.0)':
+    dependencies:
+      '@auth/core': 0.41.2
+      mongodb: 7.1.0
+    transitivePeerDependencies:
+      - '@simplewebauthn/browser'
+      - '@simplewebauthn/server'
+      - nodemailer
 
   '@babel/code-frame@7.29.0':
     dependencies:

@@ -1,24 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signIn, signOut, useSession, getProviders } from "next-auth/react";
-import { FaGoogle } from "react-icons/fa";
+import { signOut, useSession } from "next-auth/react";
 import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
 import UnreadMessageCount from "@/components/UnreadMessageCount";
-
-type Provider = {
-  string: {
-    id: string;
-    name: string;
-    type: string;
-    signinUrl: string;
-    callbackUrl: string;
-  };
-};
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -26,18 +15,8 @@ const Navbar = () => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState<boolean>(false);
-  const [providers, setProviders] = useState<Provider | null>(null);
 
   const pathname = usePathname();
-
-  useEffect(() => {
-    const setAuthProviders = async () => {
-      const res = await getProviders();
-      setProviders(res as unknown as Provider);
-    };
-
-    setAuthProviders();
-  }, []);
 
   return (
     <nav className="bg-blue-700 border-b border-blue-500">
@@ -111,20 +90,12 @@ const Navbar = () => {
           {/* <!-- Right Side Menu (Logged Out) --> */}
           {!session ? (
             <div className="hidden md:block md:ml-6">
-              <div className="flex items-center">
-                {providers
-                  ? Object.values(providers).map((provider) => (
-                      <button
-                        key={provider.id}
-                        onClick={() => signIn(provider.id)}
-                        className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
-                      >
-                        <FaGoogle className="text-white mr-2" />
-                        <span>Login or Register</span>
-                      </button>
-                    ))
-                  : null}
-              </div>
+              <Link
+                href="/api/auth/signin"
+                className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+              >
+                <span>Login or Register</span>
+              </Link>
             </div>
           ) : null}
 
@@ -252,17 +223,14 @@ const Navbar = () => {
                 Add Property
               </Link>
             ) : null}
-            {!session && providers
-              ? Object.values(providers).map((provider) => (
-                  <button
-                    key={provider.id}
-                    onClick={() => signIn(provider.id)}
-                    className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4"
-                  >
-                    <span>Login or Register</span>
-                  </button>
-                ))
-              : null}
+            {!session ? (
+              <Link
+                href="/api/auth/signin"
+                className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4"
+              >
+                <span>Login or Register</span>
+              </Link>
+            ) : null}
           </div>
         </div>
       ) : null}

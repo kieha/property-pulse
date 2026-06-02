@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^3.11.2",
     "cloudinary": "^2.9.0",
     "mapbox-gl": "^3.22.0",
     "mongodb": "^7.1.0",
