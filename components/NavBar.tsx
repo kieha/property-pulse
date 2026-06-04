@@ -249,7 +249,7 @@ const Navbar = () => {
                 Add Property
               </Link>
             ) : null}
-            {!session ? (
+            {!session && pathname !== "/signin" ? (
               <Link
                 href="/api/auth/signin"
                 className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4"
