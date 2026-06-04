@@ -95,7 +95,7 @@ const Navbar = () => {
           </div>
 
           {/* <!-- Right Side Menu (Logged Out) --> */}
-          {!session ? (
+          {!session && pathname !== "/signin" ? (
             <div className="hidden md:block md:ml-6">
               <Link
                 href="/api/auth/signin"
