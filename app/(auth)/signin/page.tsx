@@ -1,5 +1,6 @@
-import { signIn, providerMap } from "@/auth";
 import { FaGoogle } from "react-icons/fa";
+import { signIn, providerMap } from "@/auth";
+import SigninButton from "@/components/SigninButton";
 
 const SignInPage = async ({
   searchParams,
@@ -27,13 +28,11 @@ const SignInPage = async ({
                     }
                   }}
                 >
-                  <button
-                    className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 w-full justify-center"
-                    type="submit"
-                  >
-                    <FaGoogle className="text-white mr-2" />
-                    <span>Sign in with Google</span>
-                  </button>
+                  <SigninButton
+                    text="Sign in with Google"
+                    pendingText="Signin in..."
+                    Icon={<FaGoogle className="text-white mr-2" />}
+                  />
                   <hr />
                 </form>
               ) : null}
@@ -72,12 +71,10 @@ const SignInPage = async ({
                     />
                   </div>
 
-                  <button
-                    className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 w-full justify-center"
-                    type="submit"
-                  >
-                    Send login link
-                  </button>
+                  <SigninButton
+                    text="Send login link"
+                    pendingText="Sending link..."
+                  />
                 </form>
               ) : null}
             </div>

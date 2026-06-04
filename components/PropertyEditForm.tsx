@@ -9,6 +9,7 @@ import type { Property } from "@/utils/types";
 import Spinner from "@/components/Spinner";
 import { amenities } from "@/components/PropertyAddForm";
 import PropertyTypeOptions from "@/components/PropertyTypeOptions";
+import PropertySubmitButton from "./PropertySubmitButton";
 
 interface PropertyFields extends Omit<
   Property,
@@ -44,7 +45,6 @@ const PropertyEditForm = () => {
   const { id } = useParams();
   const router = useRouter();
 
-  const [submitting, setSubmitting] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [fields, setFields] = useState<PropertyFields>({
     name: "",
@@ -164,7 +164,6 @@ const PropertyEditForm = () => {
     e.preventDefault();
 
     try {
-      setSubmitting(true);
       const formData = new FormData(e.target);
       const res = await fetch(`/api/properties/${id}`, {
         method: "PUT",
@@ -181,8 +180,6 @@ const PropertyEditForm = () => {
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -450,15 +447,10 @@ const PropertyEditForm = () => {
         />
       </div>
 
-      <div>
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
-          type="submit"
-          disabled={submitting}
-        >
-          Update Property
-        </button>
-      </div>
+      <PropertySubmitButton
+        text="Update Property"
+        pendingText="Updating property..."
+      />
     </form>
   );
 };

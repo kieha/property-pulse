@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import PropertyTypeOptions from "@/components/PropertyTypeOptions";
+import PropertySubmitButton from "@/components/PropertySubmitButton";
 
 export const amenities = [
   { id: "amenity_wifi", value: "Wifi" },
@@ -432,14 +433,10 @@ const PropertyAddForm = () => {
         />
       </div>
 
-      <div>
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
-          type="submit"
-        >
-          Add Property
-        </button>
-      </div>
+      <PropertySubmitButton
+        text="Add Property"
+        pendingText="Adding property..."
+      />
     </form>
   );
 };

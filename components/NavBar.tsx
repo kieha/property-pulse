@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useClickAway } from "react-use";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,8 +14,14 @@ const Navbar = () => {
   const { data: session } = useSession();
   const profileImage = session?.user?.image;
 
+  const profileRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState<boolean>(false);
+
+  useClickAway(profileRef, () => setIsProfileMenuOpen(false));
+  useClickAway(mainRef, () => setIsMobileMenuOpen(false));
 
   const pathname = usePathname();
 
@@ -126,8 +133,9 @@ const Navbar = () => {
                 </button>
                 <UnreadMessageCount session={session} />
               </Link>
-              {/* <!-- Profile dropdown button --> */}
-              <div className="relative ml-3">
+
+              {/* <!-- Profile dropdown --> */}
+              <div className="relative ml-3" ref={profileRef}>
                 <div>
                   <button
                     type="button"
@@ -149,7 +157,6 @@ const Navbar = () => {
                   </button>
                 </div>
 
-                {/* <!-- Profile dropdown --> */}
                 {isProfileMenuOpen ? (
                   <div
                     id="user-menu"
@@ -174,7 +181,7 @@ const Navbar = () => {
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex={-1}
-                      id="user-menu-item-2"
+                      id="user-menu-item-1"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
                       Saved Properties
@@ -201,17 +208,32 @@ const Navbar = () => {
 
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
       {isMobileMenuOpen ? (
-        <div id="mobile-menu">
+        <div
+          id="mobile-menu"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="mobile-menu-button"
+          tabIndex={-1}
+          ref={mainRef}
+        >
           <div className="space-y-1 px-2 pb-3 pt-2">
             <Link
               href="/"
               className={`text-white block rounded-md px-3 py-2 text-base font-medium ${pathname === "/" ? "bg-black" : ""}`}
+              role="menuitem"
+              tabIndex={-1}
+              id="mobile-menu-item-0"
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               href="/properties"
               className={`text-white block rounded-md px-3 py-2 text-base font-medium ${pathname === "/properties" ? "bg-black" : ""}`}
+              role="menuitem"
+              tabIndex={-1}
+              id="mobile-menu-item-1"
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               Properties
             </Link>
@@ -219,6 +241,10 @@ const Navbar = () => {
               <Link
                 href="properties/add"
                 className={`text-white block rounded-md px-3 py-2 text-base font-medium ${pathname === "/properties/add" ? "bg-black" : ""}`}
+                role="menuitem"
+                tabIndex={-1}
+                id="mobile-menu-item-2"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Add Property
               </Link>

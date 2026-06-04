@@ -33,6 +33,7 @@ const Properties = () => {
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
+    window.scrollTo({ top: 0 });
   };
 
   return loading ? (

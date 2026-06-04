@@ -5,6 +5,7 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import connectDB from "@/config/database";
 import User from "@/models/User";
 import client from "./lib/db";
+import { sendVerificationRequest } from "./lib/authSendVerificationEmail";
 
 const providers = [
   Google({
@@ -23,6 +24,7 @@ const providers = [
     apiKey: process.env.MAILGUN_API_KEY,
     from: process.env.MAILGUN_EMAIL_FROM,
     region: "EU",
+    sendVerificationRequest,
   }),
 ];
 
@@ -72,8 +74,8 @@ export const authOptions = {
         userExists = await User.create(userInfo);
       }
       // 5. If the user exists but has no image, keep their record up to date
-      if (!userExists.image) {
-        const updated = await User.findOneAndUpdate({ email: profile?.email }, { image: profile?.picture }, { timestamps: true })
+      if (!userExists.image && profile?.picture) {
+        await User.findOneAndUpdate({ email: profile.email }, { image: profile.picture }, { timestamps: true })
       }
       // 6. Return true to allow sign in
       return true;

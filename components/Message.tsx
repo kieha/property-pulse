@@ -48,15 +48,17 @@ const Message = ({ message }: { message: MessageType }) => {
 
   return isDeleted ? null : (
     <div className="relative bg-white p-4 rounded-md shadow-md border border-gray-200">
-      {isRead ? null : (
-        <div className="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-md">
-          New
-        </div>
-      )}
-      <h2 className="text-xl mb-4">
-        <span className="font-bold">Property Inquiry:</span>{" "}
-        {message.property.name}
-      </h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl mb-4">
+          <span className="font-bold">Property Inquiry:</span>{" "}
+          {message.property.name}
+        </h2>
+        {isRead ? null : (
+          <div className="top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-md">
+            New
+          </div>
+        )}
+      </div>
       <p className="text-gray-700">{message.body}</p>
 
       <ul className="mt-4">
