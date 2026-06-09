@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.2",
+    "@react-google-maps/api": "^2.20.8",
     "cloudinary": "^2.9.0",
     "mapbox-gl": "^3.22.0",
     "mongodb": "^7.1.0",

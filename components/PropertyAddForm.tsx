@@ -1,62 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { type Property, type PropertyAddFields } from "@/utils/types";
+import { AMENITIES } from "@/utils/constants";
 import PropertyTypeOptions from "@/components/PropertyTypeOptions";
 import PropertySubmitButton from "@/components/PropertySubmitButton";
-
-export const amenities = [
-  { id: "amenity_wifi", value: "Wifi" },
-  { id: "amenity_kitchen", value: "Full Kitchen" },
-  { id: "amenity_washer_dryer", value: "Washer & Dryer" },
-  { id: "amenity_free_parking", value: "Free Parking" },
-  { id: "amenity_pool", value: "Swimming Pool" },
-  { id: "amenity_hot_tub", value: "Hot Tub" },
-  { id: "amenity_24_7_security", value: "24/7 Security" },
-  { id: "amenity_wheelchair_accessible", value: "Wheelchair Accessible" },
-  { id: "amenity_elevator_access", value: "Elevator Access" },
-  { id: "amenity_dishwasher", value: "Dishwasher" },
-  { id: "amenity_gym_fitness_center", value: "Gym/Fitness Center" },
-  { id: "amenity_air_conditioning", value: "Air Conditioning" },
-  { id: "amenity_balcony_patio", value: "Balcony/Patio" },
-  { id: "amenity_smart_tv", value: "Smart TV" },
-  { id: "amenity_coffee_maker", value: "Coffee Maker" },
-  { id: "amenity_beach_access", value: "Beach Access" },
-  { id: "amenity_outdoor_grill_bbq", value: "Outdoor Grill/BBQ" },
-  { id: "amenity_fireplace", value: "Fireplace" },
-  { id: "amenity_hiking_trails_access", value: "Hiking Trails Access" },
-  { id: "amenity_pet_friendly", value: "Pet-Friendly" },
-  { id: "amenity_ski_equipment_storage", value: "Ski Equipment Storage" },
-];
-
-type PropertyFields = {
-  name: string;
-  type: string;
-  description?: string;
-  location: {
-    street?: string;
-    city?: string;
-    state?: string;
-    zipcode?: string;
-  };
-  beds: string;
-  baths: string;
-  square_feet: string;
-  amenities: string[];
-  rates: {
-    nightly?: string;
-    weekly?: string;
-    monthly?: string;
-  };
-  seller_info: {
-    name?: string;
-    email?: string;
-    phone?: string;
-  };
-  images: Array<File>;
-};
+import PropertyLocationInput from "@/components/PropertyLocationInput";
 
 const PropertyAddForm = () => {
-  const [fields, setFields] = useState<PropertyFields>({
+  const router = useRouter();
+
+  const [fields, setFields] = useState<PropertyAddFields>({
     name: "",
     type: "",
     description: "",
@@ -155,8 +111,47 @@ const PropertyAddForm = () => {
     }));
   };
 
+  const setLocationFields = (address: {
+    street: string;
+    city: string;
+    state: string;
+    zipcode: string;
+  }) => {
+    setFields((prevFields) => ({
+      ...prevFields,
+      location: {
+        street: address.street,
+        city: address.city,
+        state: address.state,
+        zipcode: address.zipcode,
+      },
+    }));
+  };
+
+  const addProperty = async (formData: FormData) => {
+    try {
+      const res = await fetch("/api/properties", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.status === 200) {
+        toast.success("Property added successfully!");
+        const property: Property = await res.json();
+        router.push(`/properties/${property._id}`);
+      } else if (res.status === 401 || res.status === 403) {
+        toast.error("Permission denied");
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
-    <form action="/api/properties" method="POST" encType="multipart/form-data">
+    <form action={addProperty}>
       <h2 className="text-3xl text-center font-semibold mb-6">Add Property</h2>
 
       <div className="mb-4">
@@ -209,14 +204,10 @@ const PropertyAddForm = () => {
 
       <div className="mb-4 bg-blue-50 p-4">
         <label className="block text-gray-700 font-bold mb-2">Location</label>
-        <input
-          type="text"
-          id="street"
-          name="location.street"
-          className="border rounded w-full py-2 px-3 mb-2"
-          placeholder="Street"
+        <PropertyLocationInput
           value={fields.location.street}
           onChange={handleChange}
+          setLocationFields={setLocationFields}
         />
         <input
           type="text"
@@ -244,6 +235,7 @@ const PropertyAddForm = () => {
           name="location.zipcode"
           className="border rounded w-full py-2 px-3 mb-2"
           placeholder="Zipcode"
+          required
           value={fields.location.zipcode}
           onChange={handleChange}
         />
@@ -300,7 +292,7 @@ const PropertyAddForm = () => {
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Amenities</label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          {amenities.map((amenity) => (
+          {AMENITIES.map((amenity) => (
             <div key={amenity.id}>
               <input
                 type="checkbox"

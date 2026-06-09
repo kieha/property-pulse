@@ -5,40 +5,12 @@ import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { fetchProperty } from "@/utils/requests";
-import type { Property } from "@/utils/types";
+import { type PropertyEditFields } from "@/utils/types";
+import { AMENITIES } from "@/utils/constants";
 import Spinner from "@/components/Spinner";
-import { amenities } from "@/components/PropertyAddForm";
 import PropertyTypeOptions from "@/components/PropertyTypeOptions";
-import PropertySubmitButton from "./PropertySubmitButton";
-
-interface PropertyFields extends Omit<
-  Property,
-  | "_id"
-  | "beds"
-  | "baths"
-  | "square_feet"
-  | "rates"
-  | "owner"
-  | "images"
-  | "is_featured"
-  | "createdAt"
-  | "updatedAt"
-> {
-  beds: string;
-  baths: string;
-  square_feet: string;
-  amenities: string[];
-  rates: {
-    nightly?: string;
-    weekly?: string;
-    monthly?: string;
-  };
-  seller_info: {
-    name: string;
-    email: string;
-    phone: string;
-  };
-}
+import PropertySubmitButton from "@/components/PropertySubmitButton";
+import PropertyLocationInput from "@/components/PropertyLocationInput";
 
 const PropertyEditForm = () => {
   const { data: session } = useSession();
@@ -46,7 +18,7 @@ const PropertyEditForm = () => {
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [fields, setFields] = useState<PropertyFields>({
+  const [fields, setFields] = useState<PropertyEditFields>({
     name: "",
     type: "",
     description: "",
@@ -91,7 +63,7 @@ const PropertyEditForm = () => {
             propertyData.rates = defaultRates;
           }
         }
-        setFields(propertyData as unknown as PropertyFields);
+        setFields(propertyData as unknown as PropertyEditFields);
       } catch (error) {
         console.error(error);
       } finally {
@@ -160,11 +132,25 @@ const PropertyEditForm = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault();
+  const setLocationFields = (address: {
+    street: string;
+    city: string;
+    state: string;
+    zipcode: string;
+  }) => {
+    setFields((prevFields) => ({
+      ...prevFields,
+      location: {
+        street: address.street,
+        city: address.city,
+        state: address.state,
+        zipcode: address.zipcode,
+      },
+    }));
+  };
 
+  const editProperty = async (formData: FormData) => {
     try {
-      const formData = new FormData(e.target);
       const res = await fetch(`/api/properties/${id}`, {
         method: "PUT",
         body: formData,
@@ -186,7 +172,7 @@ const PropertyEditForm = () => {
   return loading ? (
     <Spinner />
   ) : (
-    <form onSubmit={handleSubmit}>
+    <form action={editProperty}>
       <h2 className="text-3xl text-center font-semibold mb-6">Edit Property</h2>
 
       <div className="mb-4">
@@ -239,14 +225,10 @@ const PropertyEditForm = () => {
 
       <div className="mb-4 bg-blue-50 p-4">
         <label className="block text-gray-700 font-bold mb-2">Location</label>
-        <input
-          type="text"
-          id="street"
-          name="location.street"
-          className="border rounded w-full py-2 px-3 mb-2"
-          placeholder="Street"
+        <PropertyLocationInput
           value={fields.location.street}
           onChange={handleChange}
+          setLocationFields={setLocationFields}
         />
         <input
           type="text"
@@ -330,7 +312,7 @@ const PropertyEditForm = () => {
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Amenities</label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          {amenities.map((amenity) => (
+          {AMENITIES.map((amenity) => (
             <div key={amenity.id}>
               <input
                 type="checkbox"

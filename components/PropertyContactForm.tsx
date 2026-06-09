@@ -14,6 +14,7 @@ const PropertyContactForm = ({ property }: { property: Property }) => {
   const [phone, setPhone] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [wasSubmitted, setWasSubmitted] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
@@ -28,6 +29,7 @@ const PropertyContactForm = ({ property }: { property: Property }) => {
     };
 
     try {
+      setSubmitting(true);
       const res = await fetch("/api/messages", {
         method: "POST",
         headers: {
@@ -49,6 +51,7 @@ const PropertyContactForm = ({ property }: { property: Property }) => {
       console.log(error);
       toast.error("Error sending form");
     } finally {
+      setSubmitting(false);
       setName("");
       setEmail("");
       setPhone("");
@@ -136,8 +139,10 @@ const PropertyContactForm = ({ property }: { property: Property }) => {
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
               type="submit"
+              disabled={submitting}
             >
-              <FaPaperPlane className="mr-2" /> Send Message
+              <FaPaperPlane className="mr-2" />{" "}
+              {submitting ? "Sending message..." : "Send Message"}
             </button>
           </div>
         </form>

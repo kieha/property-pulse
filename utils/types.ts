@@ -49,3 +49,59 @@ export type Message = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type PropertyAddFields = {
+  name: string;
+  type: string;
+  description?: string;
+  location: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipcode?: string;
+  };
+  beds: string;
+  baths: string;
+  square_feet: string;
+  amenities: string[];
+  rates: {
+    nightly?: string;
+    weekly?: string;
+    monthly?: string;
+  };
+  seller_info: {
+    name?: string;
+    email?: string;
+    phone?: string;
+  };
+  images: Array<File>;
+};
+
+export interface PropertyEditFields extends Omit<
+  Property,
+  | "_id"
+  | "beds"
+  | "baths"
+  | "square_feet"
+  | "rates"
+  | "owner"
+  | "images"
+  | "is_featured"
+  | "createdAt"
+  | "updatedAt"
+> {
+  beds: string;
+  baths: string;
+  square_feet: string;
+  amenities: string[];
+  rates: {
+    nightly?: string;
+    weekly?: string;
+    monthly?: string;
+  };
+  seller_info: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+}

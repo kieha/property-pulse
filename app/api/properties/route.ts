@@ -96,7 +96,7 @@ export const POST = async (request: Request) => {
     const newProperty = new Property(propertyData);
     await newProperty.save();
 
-    return Response.redirect(`${process.env.AUTH_URL}/properties/${newProperty._id}`);
+    return new Response(JSON.stringify(newProperty), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response("Failed to add property", { status: 500 });
