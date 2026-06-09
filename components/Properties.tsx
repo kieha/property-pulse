@@ -18,6 +18,7 @@ const Properties = () => {
   useEffect(() => {
     const fetchPropertiesData = async () => {
       try {
+        setLoading(true);
         const propertiesData = await fetchProperties(page, PAGE_SIZE);
         setProperties(propertiesData.properties);
         setTotalItems(propertiesData.total);
